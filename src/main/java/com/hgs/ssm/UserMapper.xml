@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hgs.ssm.UserMap">
+	<select id="selectUser" resultType="User" parameterType="Map">
+		select *
+		from User where id = #{id}
+	</select>
+	<select id="selectAllUser" resultType="com.hgs.ssm.User">
+		select * from User
+	</select>
+	<insert id="insertUser" parameterType="com.hgs.ssm.User">
+		insert into
+		User(nickname,password) values(#{nickname},#{password})
+	</insert>
+	<delete id="deleteUser" parameterType="User"><!-- 指定了别名所以直接用User -->
+		delete from User where id = #{id}
+	</delete>
+	<!-- dynamic sql -->
+	<select id="queryUser" parameterType="Map" resultType="User">
+		select * from User
+		<where>
+ 			<if test="nickname != null">
+				nickname like #{nickname}
+			</if>
+			<if test="id != null">
+				and id like #{id}
+			</if> 
+			<choose>
+				<when test="id!=null">
+					and id = #{id}
+				</when>
+				<when test="password !=null">
+					and password = #{password}
+				</when>
+				<!-- 否则 -->
+				<otherwise>
+					and isAdmin = 0
+				</otherwise>
+			</choose>
+		</where>
+	</select>
+</mapper>
