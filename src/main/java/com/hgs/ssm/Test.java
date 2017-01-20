@@ -40,8 +40,8 @@ public class Test {
 		map.put("nickname", "hgs");
 		//map.put("id","1");
 		List<User> user = uDao.getUserList(map);
-		for (User u : user) {
-			System.out.println(u);
+		for (User uu : user) {
+			System.out.println(uu);
 		}
 		
 	}
