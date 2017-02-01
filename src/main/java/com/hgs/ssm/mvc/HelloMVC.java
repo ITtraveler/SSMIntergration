@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,41 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloMVC {
 	private static final String SUCCESS = "success";
+
+	/**
+	 * 1.有@ModelAttribute 标记的方法，会在每个目标方法执行前辈SpringMVC调用
+	 * 2.@ModelAttribute 注解也可以来修饰目标方法POJO类型的入参，其value属性值有如下作用：
+	 * 1》SpringMVC会使用value属性值在implicitModel中查找对应的对象，若存在则会直接传入到目标方法的入参中。
+	 * 2》SpringMVC会以value为key，POJO类型的对象为value，存入到request中。
+	 * @param age
+	 * @param map
+	 */
+	@ModelAttribute
+	public void modelAttribute(@RequestParam(value="age",required=false,defaultValue="1") int age,Map<String,Object> map){
+		if(age > 0){
+			User user = new User("zhangsan",age);
+			System.out.println("ModelAttribute:"+user);
+			map.put("abc", user);
+		}
+	}
+	
+	/**
+	 * 运行流程：
+	 * 1.执行@ModelAttribute 注解修饰的方法：从数据库中取出对象，把对象放到了Map中，键为user
+	 * 2.SpringMVC 从Map中取出User对象，并把表单的请求参数赋给该User对象的对应属性
+	 * 3.SpringMVC把上述对象传入目标方法的参数。
+	 * 
+	 * NOTE：在@ModelAttribute 修饰的方法中，放入到Map的键需要与目标方法入参类型的第一个字母小写的字符串一致
+	 * eg： User   则key为user
+	 * 也可以用@ModelAttribute进行声明名字  去map中的key匹配，如abc
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping("ModelAttributeTest")
+	public String modelAttributeTest(@ModelAttribute("abc") User user){
+		System.out.println("user->"+user);
+		return SUCCESS;
+	}
 	
 	@RequestMapping("sessionAttribute")
 	public String sessionAttributeTest(Map<String,Object> map) throws IOException{

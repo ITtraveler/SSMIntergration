@@ -48,5 +48,8 @@
 	<a href = "SpringMVC/mapTest">Map Test</a>
 	<br/>
 	<a href = "SpringMVC/sessionAttribute">SessionAttribute Test</a>
+	
+	<br/>
+	<a href = "SpringMVC/ModelAttributeTest">ModelAttribute  Test</a>
 </body>
 </html>
