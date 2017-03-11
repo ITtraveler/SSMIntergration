@@ -3,6 +3,18 @@ package com.hgs.ssm.mvc;
 public class Address {
 	private String city;
 	private String province;
+	
+	public Address() {
+		super();
+	}
+	public Address(String city, String province) {
+		super();
+		this.city = city;
+		this.province = province;
+	}
+	public Address(String city) {
+		this.city = city;
+	}
 	public String getCity() {
 		return city;
 	}

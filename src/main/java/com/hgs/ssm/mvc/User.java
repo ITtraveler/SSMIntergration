@@ -1,6 +1,7 @@
 package com.hgs.ssm.mvc;
 
 public class User {
+
 	private String name;
 	private int age;
 	private Address address;
@@ -13,6 +14,13 @@ public class User {
 		super();
 		this.name = name;
 		this.age = age;
+	}
+
+	
+	public User(String name, String age, Address address) {
+		this.name = name;
+		this.age = Integer.valueOf(age);
+		this.address = address;
 	}
 
 	public String getName() {

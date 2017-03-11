@@ -10,6 +10,19 @@ import org.apache.ibatis.session.SqlSession;
 import com.hgs.ssm.mybatis.MyBatisUtils;
 
 public class UserDao {
+	public User getUser(int id){
+		SqlSession session = null;
+		try {
+			session = MyBatisUtils.getSession();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		UserMap userMap = session.getMapper(UserMap.class);
+		User user = userMap.getUser(id);
+		session.close();
+		return user;
+	}
 	public List<User> getUserList(Map<String,String> map) throws IOException{
 		SqlSession session = MyBatisUtils.getSession();
 		UserMap userMap = session.getMapper(UserMap.class);

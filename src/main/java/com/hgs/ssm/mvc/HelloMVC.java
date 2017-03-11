@@ -10,14 +10,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,9 +29,40 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class HelloMVC {
 	private static final String SUCCESS = "success";
-
+	
+	@RequestMapping("testJson")
+	@ResponseBody
+	public User testJson(){
+		return new User("lina","21",new Address("福建","福州"));
+	}
+	
 	/**
-	 * 1.有@ModelAttribute 标记的方法，会在每个目标方法执行前辈SpringMVC调用
+	 * 用@InitBinder标识的方法，可以对WebDataBinder对象进行初始化。
+	 * WebDataBinder是DataBinder的子类，用于完成由表单字段到JavaBean属性的绑定
+	 * 
+	 * @InitBinder标识的方法不能有返回值，必须void
+	 * @InitBinder标识的方法参数通常为WebDataBinder
+	 * 当设置其，之后发现user再也不能正常显示了
+	 * @param binder
+	 */
+	//@InitBinder
+	public void initBind(WebDataBinder binder){
+		binder.setDisallowedFields("user");
+	}
+	
+	@RequestMapping("redirectTest")
+	public String redirectTest(){
+		System.out.println("redirect");
+		return "redirect:/index.jsp";
+	}
+	//自定义视图
+	@RequestMapping("/customView")
+	public String customViewTest(){
+		return "helloView";
+	}
+	
+	/**
+	 * 1.有@ModelAttribute 标记的方法，会在每个目标方法执行前被SpringMVC调用
 	 * 2.@ModelAttribute 注解也可以来修饰目标方法POJO类型的入参，其value属性值有如下作用：
 	 * 1》SpringMVC会使用value属性值在implicitModel中查找对应的对象，若存在则会直接传入到目标方法的入参中。
 	 * 2》SpringMVC会以value为key，POJO类型的对象为value，存入到request中。
@@ -61,21 +95,23 @@ public class HelloMVC {
 		System.out.println("user->"+user);
 		return SUCCESS;
 	}
-	
+
 	@RequestMapping("sessionAttribute")
 	public String sessionAttributeTest(Map<String,Object> map) throws IOException{
 		map.put("user", new User("hgs",22));
 		map.put("log", "hello SessionAttributes");
+		System.out.println(map.get("list"));
 		return SUCCESS;
 	}
 	/**
-	 * 目标方法可以添加Map类型（世界上也可以是Model类型或ModelMap类型）的参数
+	 * 目标方法可以添加Map类型（事实上也可以是Model类型或ModelMap类型）的参数
 	 * @param map
 	 * @return
 	 */
 	@RequestMapping("mapTest")
 	public String mapTest(Map<String,Object> map){
 		map.put("list", Arrays.asList("a","b","c"));
+		System.out.println("mapTest:"+map.get("user"));
 		return SUCCESS;
 	}
 	/**
@@ -185,8 +221,10 @@ public class HelloMVC {
 	// 默认是get and headers方法
 	@RequestMapping(value = "/paramTest", params = { "user", "age!=10" }, headers = {
 			"Accept-Language=zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3" })
-	public String paramTest() {
-
+	public String paramTest(HttpServletRequest request,HttpServletResponse response) {
+		String user = (String)request.getParameter("user");
+		String age = (String)request.getParameter("age");
+		System.out.println(user+"---"+age);
 		return SUCCESS;
 	}
 
@@ -194,5 +232,16 @@ public class HelloMVC {
 	@RequestMapping("helloMVC")
 	public String hello() {
 		return SUCCESS;
+	}
+	
+	
+	
+	
+	/************************/
+	
+	@RequestMapping("/testConverter")
+	public String testConverter(@RequestParam("user") User user){
+		System.out.println("user: "+user);
+		return "success";
 	}
 }

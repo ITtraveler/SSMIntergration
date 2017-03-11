@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	<context:component-scan base-package="com.hgs.ssm.mvc" />
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 配置视图BeanNameViewResolver 解析器：使用视图的名字来解析视图 -->
+	<!-- 通过order来定义视图解析器的优先级，order值越小优先级越高 -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="100"></property>
+	</bean>
+	<!-- 配置直接转发界面 -->
+	<!-- 可以直接相应转发的界面，而无需在经过Handler的方法。 -->
+	<mvc:view-controller path="/success" view-name="success" />
+	
+	<mvc:default-servlet-handler/>
+	<!-- 在实际开发中通常都需配置mvc:annotation-driven 标签 -->
+	<mvc:annotation-driven conversion-service="conversionService">
+	
+	</mvc:annotation-driven>
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<ref bean="myConverter"/>
+			</set>
+		</property>
+	</bean>
+
+</beans>

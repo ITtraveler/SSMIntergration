@@ -9,13 +9,15 @@ import java.util.Map;
  *         MapperRegistry 其方法也要与id一致 这接口相当于UerMapper映射器的接口版
  */
 public interface UserMap {
+	User getUser(int id);
+
 	User selectUser(int id);
 
 	List<User> selectAllUser();
 
 	void deleteUser(String id);
 
-	void insertUser(String nickname,String password);
-	
+	void insertUser(String nickname, String password);
+
 	List<User> queryUser(Map<?, ?> map);
 }

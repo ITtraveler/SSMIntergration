@@ -36,13 +36,15 @@ public class Test {
 //		}
 //		session.commit();
 //		session.close();	
-		Map<String,String> map = new HashMap<String, String>();
-		map.put("nickname", "hgs");
-		//map.put("id","1");
-		List<User> user = uDao.getUserList(map);
-		for (User uu : user) {
-			System.out.println(uu);
-		}
-		
+//		Map<String,String> map = new HashMap<String, String>();
+//		map.put("nickname", "hgs");
+//		//map.put("id","1");
+//		List<User> user = uDao.getUserList(map);
+//		for (User uu : user) {
+//			System.out.println(uu);
+//		}
+//		
+		User user = uDao.getUser(6);
+		System.out.println(user);
 	}
 }
