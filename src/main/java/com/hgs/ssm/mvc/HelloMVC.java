@@ -30,11 +30,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelloMVC {
 	private static final String SUCCESS = "success";
 	
-	@RequestMapping("testJson")
-	@ResponseBody
-	public User testJson(){
-		return new User("lina","21",new Address("福建","福州"));
-	}
 	
 	/**
 	 * 用@InitBinder标识的方法，可以对WebDataBinder对象进行初始化。
@@ -47,7 +42,7 @@ public class HelloMVC {
 	 */
 	//@InitBinder
 	public void initBind(WebDataBinder binder){
-		binder.setDisallowedFields("user");
+		binder.setDisallowedFields("user");//设置不允许赋值
 	}
 	
 	@RequestMapping("redirectTest")

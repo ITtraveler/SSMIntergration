@@ -1,4 +1,4 @@
-package com.hgs.ssm;
+package com.hgs.ssm.mybatis;
 
 import java.util.List;
 

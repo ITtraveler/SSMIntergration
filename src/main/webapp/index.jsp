@@ -62,19 +62,29 @@
 		<input id="user" type="text" name="user" />
 		<input type="submit" value="提交"/>
 	</form>
-
+	<!-- 新篇章 -->
 	<br/>
-	<a href="SpringMVC/testJson" id="getJson">获取Json</a>
-	<script type="text/javascript">
-	/* 	 $(function getJson() {
-			$("#getJson").click(function() {
-				var url = this.href;
-				var arg={};
-				$.post(url,arg,function (result){
-					alert(result.val());
-				});
-			});
-		});  */
-	</script>
+	<a href="testJson" id="getJson">获取Json</a>
+	<form action="testHttpMessageConverter" method="post" enctype="multipart/form-data">
+		HttpMessageConverter上传文件：<input type="file" name="file"/>
+		<input type="submit" value="开始上传"/>
+	</form>
+	<br/>
+	<a href="testHandlerExceptionResolver?i=10">testHandlerExceptionResolver</a>
+	<br/>
+	<a href="testResponseStatus">testResponseStatus</a>
+	<br/>
+	<form action="testFileUpload" method="post" enctype="multipart/form-data">
+		上传文件：<input type="file" name="file"/>
+		<input type="submit" value="开始上传"/>
+	</form>
+	
+	
+	<form action="testFilesUpload" method="post" enctype="multipart/form-data">
+		多文件上传：<input type="file" name="files"/>
+		<input type="file" name="files"/>
+		<input type="submit" value="开始上传"/>
+	</form>
+	
 </body>
 </html>

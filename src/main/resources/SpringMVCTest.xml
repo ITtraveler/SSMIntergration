@@ -5,7 +5,9 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
-	<context:component-scan base-package="com.hgs.ssm.mvc" />
+	<context:component-scan base-package="com.hgs.ssm.mvc" >
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/" />
@@ -24,8 +26,8 @@
 	<mvc:default-servlet-handler/>
 	<!-- 在实际开发中通常都需配置mvc:annotation-driven 标签 -->
 	<mvc:annotation-driven conversion-service="conversionService">
-	
 	</mvc:annotation-driven>
+
 	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
 		<property name="converters">
 			<set>
@@ -34,4 +36,20 @@
 		</property>
 	</bean>
 
+	<mvc:interceptors>
+	<!-- 自定义拦截器 -->
+		<bean class="com.hgs.ssm.mvc.FirstIntercepter"></bean>
+		<!-- 用于配置作用路径 ,可进行配置哪些路径进行拦截-->
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/SpringMVC/**"/>
+			<bean class="com.hgs.ssm.mvc.SecendIntercepter"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- 文件上传 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8"></property>
+		<property name="maxUploadSize" value="1024000"></property>
+	</bean>
 </beans>

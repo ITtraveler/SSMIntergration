@@ -1,4 +1,4 @@
-package com.hgs.ssm;
+package com.hgs.ssm.mybatis;
 
 public class User {
 	private String id;

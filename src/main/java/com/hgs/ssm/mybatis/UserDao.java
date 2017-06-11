@@ -1,4 +1,4 @@
-package com.hgs.ssm;
+package com.hgs.ssm.mybatis;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
-
-import com.hgs.ssm.mybatis.MyBatisUtils;
 
 public class UserDao {
 	public User getUser(int id){
